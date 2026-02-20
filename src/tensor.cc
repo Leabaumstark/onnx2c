@@ -1,3 +1,4 @@
+#include "platform/windows_common.h"
 #include "tensor.h"
 #include "util.h"
 #include <cmath>

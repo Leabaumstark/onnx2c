@@ -1,3 +1,4 @@
+#include "platform/windows_common.h"
 #include "aixlog.hpp"
 #include <cassert>
 

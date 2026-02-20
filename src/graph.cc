@@ -1,4 +1,5 @@
 // model resolving part of the toC Graph class
+#include "platform/windows_common.h"
 #include "graph.h"
 #include "error.h"
 #include "nodes/graph_io.h"

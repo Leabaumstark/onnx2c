@@ -1,6 +1,6 @@
 /* This file is part of onnx2c.
  */
-
+#include "platform/windows_common.h"
 #include "options.h"
 #include "args.hxx"
 #include "error.h"

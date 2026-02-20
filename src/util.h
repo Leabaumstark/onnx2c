@@ -1,4 +1,5 @@
 #pragma once
+#include "platform/windows_common.h"
 #include "onnx.pb.h"
 #include "tensor.h"
 #include <string>

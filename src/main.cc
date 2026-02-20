@@ -1,5 +1,7 @@
 /* This file is part of onnx2c.
  */
+#include "platform/windows_common.h"
+
 #include <fstream>
 #include <iostream>
 
