@@ -25,7 +25,7 @@ class Constant : public Node {
 				LOG(TRACE) << "\t" << value_tensor->print_trace_dump() << std::endl;
 			}
 			else
-				ERROR("Unimplemented parsing of attribute " << a.name());
+				ONNX2C_ERROR("Unimplemented parsing of attribute " << a.name());
 		}
 	}
 
@@ -46,7 +46,7 @@ class Constant : public Node {
 		// Handle the degenerate case (happens in ONNX backend tests for some reason :))
 		// where the graph output is a constant.
 		if (value_tensor == nullptr)
-			ERROR("Constant tensor not resolved");
+			ONNX2C_ERROR("Constant tensor not resolved");
 		std::string dimstr;
 		for (unsigned dim = 0; dim < value_tensor->rank(); dim++) {
 			dimstr += "[d" + std::to_string(dim) + "]";

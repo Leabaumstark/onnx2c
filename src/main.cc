@@ -21,10 +21,10 @@ int main(int argc, const char* argv[])
 		exit(1); //	TODO: check out error numbers for a more accurate one
 	}
 	if (input.peek() == EOF) {
-		ERROR("\"" << options.input_file << "\" is empty");
+		ONNX2C_ERROR("\"" << options.input_file << "\" is empty");
 	}
 	if (!onnx_model.ParseFromIstream(&input)) {
-		ERROR("\"" << options.input_file << "\" is not a valid ONNX model");
+		ONNX2C_ERROR("\"" << options.input_file << "\" is not a valid ONNX model");
 	}
 
 	std::cout.precision(20);

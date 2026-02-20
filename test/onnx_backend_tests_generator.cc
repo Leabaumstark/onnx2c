@@ -50,7 +50,7 @@ bool load_input_data(const std::string &filename, onnx::TensorProto &result)
 	fclose(f);
 
 	if( nread != size )
-		ERROR("Problem reading input data");
+		ONNX2C_ERROR("Problem reading input data");
 
 	::google::protobuf::io::ArrayInputStream input_stream(data, size);
 	::google::protobuf::io::CodedInputStream coded_stream(&input_stream);
@@ -285,7 +285,7 @@ int main(int argc, char *argv[])
 			// no nan checking needed
 		}
 		else
-			ERROR("unimplemented type");
+			ONNX2C_ERROR("unimplemented type");
 		std::cout << "\t\t}" << std::endl;
 	std::cout << "\t}" << std::endl;
 	}

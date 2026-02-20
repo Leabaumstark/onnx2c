@@ -223,7 +223,7 @@ void Graph::print_interface_function(std::ostream& dst, bool definition, const s
 	// loop through the output nodes' inputs, printing them
 	Node* graph_out_node = findNodeByName("graph_output");
 	if (graph_out_node == nullptr)
-		ERROR("internal onnx2c error: no graph_output node");
+		ONNX2C_ERROR("internal onnx2c error: no graph_output node");
 
 	for (unsigned o = 0; o < graph_out_node->get_number_of_inputs(); o++) {
 		Tensor* t = graph_out_node->get_input_tensor(o);

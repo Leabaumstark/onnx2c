@@ -11,11 +11,11 @@ void TreeEnsembleClassifier::parseAttributes(onnx::NodeProto& node)
 
 	post_transform = parse_attribute_string(nameToAttributeMap["post_transform"]);
 	if (post_transform != "NONE" && post_transform != "LOGISTIC") {
-		ERROR("Only NONE and LOGISTIC post_transform are supported for TreeEnsembleClassifier");
+		ONNX2C_ERROR("Only NONE and LOGISTIC post_transform are supported for TreeEnsembleClassifier");
 	}
 
 	if (!nameToAttributeMap.contains("classlabels_int64s")) {
-		ERROR("classlabels_int64 attribute is required, classlabels_strings is not supported");
+		ONNX2C_ERROR("classlabels_int64 attribute is required, classlabels_strings is not supported");
 	}
 
 	node_tree_ids = parse_attribute_ints(nameToAttributeMap["nodes_treeids"]);
@@ -80,8 +80,8 @@ static std::string convertMode(std::string& mode)
 	if (mode == "BRANCH_NEQ")
 		return "!=";
 	if (mode == "LEAF")
-		ERROR("Attempt to convert LEAF mode in TreeEnsembleClassifier");
-	ERROR("Unknown mode in TreeEnsembleClassifier");
+		ONNX2C_ERROR("Attempt to convert LEAF mode in TreeEnsembleClassifier");
+	ONNX2C_ERROR("Unknown mode in TreeEnsembleClassifier");
 };
 
 std::unordered_map<int64_t, TreeEnsembleClassifier::Tree> TreeEnsembleClassifier::generateTreeMap() const

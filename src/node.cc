@@ -74,7 +74,7 @@ void Node::multidirectional_broadcast_size(
 		else if (dim_a[i] == dim_b[i])
 			result.push_back(dim_a[i]);
 		else
-			ERROR("multidirectional_broadcast: bad tensor shapes for node " << onnx_name);
+			ONNX2C_ERROR("multidirectional_broadcast: bad tensor shapes for node " << onnx_name);
 	}
 }
 
@@ -192,7 +192,7 @@ std::string Node::math_func(std::string name) const
 {
 	switch (math_type) {
 		case onnx::TensorProto_DataType_UNDEFINED:
-			ERROR("math function " << name << " called with undefined math type");
+			ONNX2C_ERROR("math function " << name << " called with undefined math type");
 			return "";
 		case onnx::TensorProto_DataType_FLOAT:
 		case onnx::TensorProto_DataType_FLOAT16:

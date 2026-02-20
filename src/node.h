@@ -95,7 +95,7 @@ class Node {
 	/* Not all node types have attributes. Override where needed */
 	virtual void parseAttributes(onnx::NodeProto& node)
 	{
-		ERROR("Attribute parsing not implemented for node operation type " << op_name);
+		ONNX2C_ERROR("Attribute parsing not implemented for node operation type " << op_name);
 	}
 
 	/* TODO: these should be part of class Tensor... */

@@ -67,7 +67,7 @@ void Graph::processGraph(
 		LOG(TRACE) << "\t- found graph output tensor '" << o.name() << "':" << std::endl;
 		Tensor* t = findTensor(o.name());
 		if (t == nullptr)
-			ERROR("Badly formed ONNX graph: No node produced this graph output tensor");
+			ONNX2C_ERROR("Badly formed ONNX graph: No node produced this graph output tensor");
 		t->isIO = true;
 		// There is the odd case (in tests, mostly), where an constant tensor is passed
 		// as graph output. Only in this case should the graph's output be generated into
@@ -113,7 +113,7 @@ void Graph::resolveGraphNodes(onnx::GraphProto& onnx_graph)
 	} while (num_unresolved < num_unresolved_prev_round);
 
 	if (num_unresolved != 0)
-		ERROR("Input ONNX graph is not resolvable.");
+		ONNX2C_ERROR("Input ONNX graph is not resolvable.");
 }
 
 /* Add already resolved onnx::TensorProto. E.g. TensorProtos that
@@ -135,7 +135,7 @@ Tensor* Graph::getIoTensor(onnx::ValueInfoProto& vi)
 	onnx::TypeProto::ValueCase vc = tp.value_case();
 
 	if (vc != onnx::TypeProto::ValueCase::kTensorType)
-		ERROR("unimplemented graph input type");
+		ONNX2C_ERROR("unimplemented graph input type");
 
 	onnx::TypeProto_Tensor tpt = tp.tensor_type();
 	onnx::TensorShapeProto tsp = tpt.shape();
@@ -150,7 +150,7 @@ Tensor* Graph::getIoTensor(onnx::ValueInfoProto& vi)
 
 	int32_t datatype = tpt.elem_type(); // TODO: check! The onnx.proto doesn't document this explicitly.
 	if (onnx::TensorProto_DataType_IsValid(datatype) == false)
-		ERROR("Non-valid data type " << datatype << " in tensor " << t->name);
+		ONNX2C_ERROR("Non-valid data type " << datatype << " in tensor " << t->name);
 	t->data_type = static_cast<onnx::TensorProto_DataType>(datatype);
 
 	for (onnx::TensorShapeProto_Dimension d : tsp.dim()) {
@@ -376,7 +376,7 @@ int64_t Graph::onnx_ir_version(void)
 {
 	int opset_import_size = model.opset_import_size();
 	if (opset_import_size == 0)
-		ERROR("Model has no opset version");
+		ONNX2C_ERROR("Model has no opset version");
 	if (opset_import_size > 1)
 		LOG(INFO) << "Model has multiple opset versions." << std::endl;
 	auto foo = model.opset_import(0);
@@ -559,7 +559,7 @@ Node* Graph::createNode(const onnx::NodeProto& onnx_node)
 	if (opName == "Where") return new Where;
 	if (opName == "Xor") return new Elementwise_2("Xor");
 
-	ERROR("Unimplemented: node operation " << opName);
+	ONNX2C_ERROR("Unimplemented: node operation " << opName);
 	return NULL;
 }
 
