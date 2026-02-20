@@ -29,10 +29,10 @@ class Relu : public Node {
 		const Tensor* X = get_input_tensor(0);
 		name_input(0, "X");
 		if ((typeConstraint_allFloatingPoints(X) || typeConstraint_signed_integers(X)) == false)
-			ERROR("Incorrect input for Relu");
+			ONNX2C_ERROR("Incorrect input for Relu");
 
 		if (X->data_dim[1] != 0 && !(X->data_dim[0] != 1 || X->data_dim[1] != 1))
-			ERROR("Unimplemented - multidimiensional Relu");
+			ONNX2C_ERROR("Unimplemented - multidimiensional Relu");
 
 		Tensor* rv = new Tensor;
 		for (auto d : X->data_dim)

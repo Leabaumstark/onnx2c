@@ -13,7 +13,7 @@ class Elementwise_variadic : public Node {
 	// Inputs: the stream to print to and indexing arrays for each of the input vectors (padded for broadcasting)
 	// See the implementations below for clarification :)
 	std::function<void(std::ostream&, const std::vector<std::string>&)> operation =
-	    [](std::ostream& a, const std::vector<std::string>& b) { ERROR("onnx2c internal error"); };
+	    [](std::ostream& a, const std::vector<std::string>& b) { ONNX2C_ERROR("onnx2c internal error"); };
 
 	Elementwise_variadic(std::string op)
 	{
@@ -58,14 +58,14 @@ class Elementwise_variadic : public Node {
 				INDT_3 << ");" << std::endl;
 			};
 		else
-			ERROR("Elementwise_variadic: operand " + op + " not implemented");
+			ONNX2C_ERROR("Elementwise_variadic: operand " + op + " not implemented");
 	}
 
 	virtual void parseAttributes(onnx::NodeProto& node) override
 	{
 		for (const auto& a : node.attribute()) {
 			LOG(TRACE) << "Parsing attribute " << a.name() << std::endl;
-			ERROR("unknown attribute");
+			ONNX2C_ERROR("unknown attribute");
 		}
 	}
 

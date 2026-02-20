@@ -65,7 +65,7 @@ class ConvInteger : public SpatialFilter {
 		}
 
 		if (get_X()->data_dim.size() != 4)
-			ERROR("Unimplemented: ConvInteger for non 2D images");
+			ONNX2C_ERROR("Unimplemented: ConvInteger for non 2D images");
 
 		resolve_strides();
 		resolve_dilations();
@@ -73,11 +73,11 @@ class ConvInteger : public SpatialFilter {
 		resolve_kernel_shape();
 
 		if (group != 1)
-			ERROR("Unimplemented: ConvInteger: setting group to anything but 1");
+			ONNX2C_ERROR("Unimplemented: ConvInteger: setting group to anything but 1");
 
 		for (int d : dilations)
 			if (d != 1)
-				ERROR("Unimplemented: ConvInteger: dilations other than 1");
+				ONNX2C_ERROR("Unimplemented: ConvInteger: dilations other than 1");
 
 		Tensor* rv = new Tensor;
 		rv->data_dim = resolve_output_size();

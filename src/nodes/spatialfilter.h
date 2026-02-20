@@ -64,10 +64,10 @@ class SpatialFilter : public Node {
 			for (unsigned i = 0; i < get_numDataDim(); i++)
 				strides.push_back(1);
 		if (get_numDataDim() != strides.size())
-			ERROR("Dimension of the stride do not match data dimensions");
+			ONNX2C_ERROR("Dimension of the stride do not match data dimensions");
 		for (uint64_t s : strides)
 			if (s == 0)
-				ERROR("Stride of 0");
+				ONNX2C_ERROR("Stride of 0");
 	}
 
 	void resolve_kernel_shape(void)
@@ -139,7 +139,7 @@ class SpatialFilter : public Node {
 				outdim = last_out / strides[dim] + 1;
 			}
 			else {
-				ERROR("Invalid option for auto_pad attribute");
+				ONNX2C_ERROR("Invalid option for auto_pad attribute");
 			}
 
 			rv.push_back(outdim);

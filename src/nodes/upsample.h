@@ -22,7 +22,7 @@ class Upsample : public Resize {
 		name_input(1, "scales");
 
 		if (scales->isConst == false)
-			ERROR("Unimplemented: Upsample 'sizes' input is not a compile-time constant: " + scales->name);
+			ONNX2C_ERROR("Unimplemented: Upsample 'sizes' input is not a compile-time constant: " + scales->name);
 
 		std::vector<int64_t> output_size;
 		for (int d = 0; d < scales->data_num_elem(); d++) {

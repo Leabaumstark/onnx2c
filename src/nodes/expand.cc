@@ -50,7 +50,7 @@ void Expand::resolve(void)
 	name_input(1, "shape");
 
 	if (shape->isConst == false)
-		ERROR("Unimplemented: Expand operand with non-constant input (shape).");
+		ONNX2C_ERROR("Unimplemented: Expand operand with non-constant input (shape).");
 
 	std::vector<int32_t> output_shape;
 	output_shape = resolve_output_shape();

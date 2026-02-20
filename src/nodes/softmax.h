@@ -54,13 +54,13 @@ class Softmax : public Node {
 		for (const auto& a : node.attribute()) {
 			if (a.name() == "axis") {
 				if (a.type() != onnx::AttributeProto_AttributeType_INT)
-					ERROR("Bad attribute " << a.name());
+					ONNX2C_ERROR("Bad attribute " << a.name());
 				if (a.has_i() == false)
-					ERROR("Bad attribute " << a.name());
+					ONNX2C_ERROR("Bad attribute " << a.name());
 				axis = a.i();
 			}
 			else
-				ERROR("Unknown attribute " << a.name());
+				ONNX2C_ERROR("Unknown attribute " << a.name());
 		}
 	}
 
@@ -211,7 +211,7 @@ class Softmax : public Node {
 	virtual void resolve(void) override
 	{
 		if (get_number_of_inputs() != 1)
-			ERROR("wrong number of inputs to Softmax");
+			ONNX2C_ERROR("wrong number of inputs to Softmax");
 
 		name_input(0, "input");
 

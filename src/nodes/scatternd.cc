@@ -22,7 +22,7 @@ void ScatterND::parseAttributes(onnx::NodeProto& node)
 void ScatterND::resolve(void)
 {
 	if (get_number_of_inputs() != 3) {
-		ERROR("Wrong number of inputs to ScatterND");
+		ONNX2C_ERROR("Wrong number of inputs to ScatterND");
 	}
 	name_input(0, "data");
 	name_input(1, "indices");

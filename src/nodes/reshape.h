@@ -55,14 +55,14 @@ class Reshape : public Node {
 		 * with 8-bit quantization.
 		 */
 		if (typeConstraint_integers(shape) == false)
-			ERROR("Incorrect input for node");
+			ONNX2C_ERROR("Incorrect input for node");
 
 		if (shape->isConst == false) {
-			ERROR("Reshaping to a run-time defined shape is not supported");
+			ONNX2C_ERROR("Reshaping to a run-time defined shape is not supported");
 		}
 
 		if (allowzero != 0) {
-			ERROR("Allowzero attribute set. What exactly are you expecting as the output here?");
+			ONNX2C_ERROR("Allowzero attribute set. What exactly are you expecting as the output here?");
 		}
 
 		std::vector<int> out_data_dim;
@@ -76,7 +76,7 @@ class Reshape : public Node {
 			int s = new_shape[i];
 			if (s < 0) {
 				if (negative_shape_found)
-					ERROR("Bad input: two negatives in reshape's target shape");
+					ONNX2C_ERROR("Bad input: two negatives in reshape's target shape");
 				else {
 					negative_shape_found = true;
 					negative_shape_at = i;
@@ -84,7 +84,7 @@ class Reshape : public Node {
 			}
 			else if (s == 0) {
 				if (i >= data->data_dim.size())
-					ERROR("Bad input: Reshape request duplication of input dimension that don't exist");
+					ONNX2C_ERROR("Bad input: Reshape request duplication of input dimension that don't exist");
 				s = data->data_dim[i];
 			}
 
@@ -98,7 +98,7 @@ class Reshape : public Node {
 			int missing_dim = data->data_num_elem() / output_size;
 			// If these don't match, the input is wrong.
 			if (output_size * missing_dim != (uint64_t)data->data_num_elem())
-				ERROR("Could not deduce implicit dimension size for Resize node");
+				ONNX2C_ERROR("Could not deduce implicit dimension size for Resize node");
 
 			out_data_dim[negative_shape_at] = missing_dim;
 		}

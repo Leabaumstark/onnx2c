@@ -47,7 +47,7 @@ class Resize : public Node {
 			else if (a.name() == "nearest_mode")
 				nearest_mode = parse_attribute_string(a);
 			else
-				ERROR("Unknown attribute in node Resize");
+				ONNX2C_ERROR("Unknown attribute in node Resize");
 		}
 	}
 
@@ -91,12 +91,12 @@ class Resize : public Node {
 
 		// "One of 'scales' and 'sizes' MUST be specified and it is an error if both are specified."
 		if (scales == NULL && sizes == NULL)
-			ERROR("Resize node needs one of the optional input tensors 'scales' or 'sizes'");
+			ONNX2C_ERROR("Resize node needs one of the optional input tensors 'scales' or 'sizes'");
 		if (scales != NULL && sizes != NULL)
-			ERROR("Resize node cannot have both optional input tensors 'scales' or 'sizes' given");
+			ONNX2C_ERROR("Resize node cannot have both optional input tensors 'scales' or 'sizes' given");
 
 		if (sizes && sizes->isConst == false)
-			ERROR("Unimplemented: Resize 'sizes' input is not a compile-time constant");
+			ONNX2C_ERROR("Unimplemented: Resize 'sizes' input is not a compile-time constant");
 
 		std::vector<int64_t> output_size;
 		if (sizes) {
@@ -166,7 +166,7 @@ class Resize : public Node {
 				tf += "0";
 		}
 		else
-			ERROR("Resize: unimplemented coordinate_transformation_mode. Sorry. Patches welcome :)");
+			ONNX2C_ERROR("Resize: unimplemented coordinate_transformation_mode. Sorry. Patches welcome :)");
 
 		return tf;
 	}
@@ -197,7 +197,7 @@ class Resize : public Node {
 		else if (nearest_mode == "ceil")
 			roundf = "ceil";
 		else
-			ERROR("Unkown nearest_mode");
+			ONNX2C_ERROR("Unkown nearest_mode");
 		roundf += "(" + x_resized + ")";
 
 		// Bound the result index to within the dimension size. This is implicitly expected in the specs.
@@ -239,7 +239,7 @@ class Resize : public Node {
 
 			resized_dims++;
 			if (resized_dims > 2)
-				ERROR("Resize over more than 2 dimensions is not implemented");
+				ONNX2C_ERROR("Resize over more than 2 dimensions is not implemented");
 		}
 
 		if (interpolate_dims.size() == 1) {
@@ -304,7 +304,7 @@ class Resize : public Node {
 		}
 
 		else
-			ERROR("Resize. Only 1D and 2D interpolation implemented");
+			ONNX2C_ERROR("Resize. Only 1D and 2D interpolation implemented");
 	}
 
 	void print_calc_output(std::ostream& dst) const
@@ -314,9 +314,9 @@ class Resize : public Node {
 		else if (mode == "linear")
 			print_calc_linear(dst);
 		else if (mode == "cubic")
-			ERROR("Unimplemented: cubic interpolation in resize");
+			ONNX2C_ERROR("Unimplemented: cubic interpolation in resize");
 		else
-			ERROR("Unknown interpolation mode");
+			ONNX2C_ERROR("Unknown interpolation mode");
 	}
 
 	/* Body of the node implementing function */

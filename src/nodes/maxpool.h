@@ -24,7 +24,7 @@ class MaxPool : public Pooling {
 
 		for (const auto& a : node.attribute()) {
 			if (a.name() == "storage_order")
-				ERROR("Unimplemented: MaxPool storage_order attribute");
+				ONNX2C_ERROR("Unimplemented: MaxPool storage_order attribute");
 		}
 	}
 
@@ -41,7 +41,7 @@ class MaxPool : public Pooling {
 		else if (type == "int32_t")
 			type_min_value = "INT32_MIN";
 		else
-			ERROR("Unimplemented: minimum value for this type");
+			ONNX2C_ERROR("Unimplemented: minimum value for this type");
 
 		INDT_3 << type << " curmax = " << type_min_value << ";" << std::endl;
 		if (get_Indices())
@@ -98,7 +98,7 @@ class MaxPool : public Pooling {
 		resolve_kernel_shape();
 
 		if (storage_order != 0)
-			ERROR("Unimplemented: column-major storage_order");
+			ONNX2C_ERROR("Unimplemented: column-major storage_order");
 
 		Tensor* rv = new Tensor;
 		rv->data_dim = resolve_output_size();

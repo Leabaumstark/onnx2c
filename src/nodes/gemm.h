@@ -39,7 +39,7 @@ class Gemm : public Node {
 			else if (a.name() == "transB")
 				transB = parse_attribute_int(a);
 			else
-				ERROR("unknown attribute: " << a.name());
+				ONNX2C_ERROR("unknown attribute: " << a.name());
 		}
 	}
 
@@ -107,7 +107,7 @@ class Gemm : public Node {
 						C1 = 1;
 					}
 					else {
-						ERROR("C dimension mismatch in Gemm");
+						ONNX2C_ERROR("C dimension mismatch in Gemm");
 					}
 					break;
 				case 2:
@@ -115,7 +115,7 @@ class Gemm : public Node {
 					C1 = C->data_dim[1];
 					break;
 				default:
-					ERROR("C has too many dimensions in Gemm");
+					ONNX2C_ERROR("C has too many dimensions in Gemm");
 			}
 			if (C0 <= 1)
 				C_idx += "[0]";
@@ -157,7 +157,7 @@ class Gemm : public Node {
 	virtual void resolve(void) override
 	{
 		if (get_number_of_inputs() < 2)
-			ERROR("Not enough inputs");
+			ONNX2C_ERROR("Not enough inputs");
 
 		const Tensor* A = get_input_tensor(0);
 		const Tensor* B = get_input_tensor(1);

@@ -28,7 +28,7 @@ class Clip : public Node {
 			else if (a.name() == "max")
 				max_attr = parse_attribute_float(a);
 			else
-				ERROR("Unknown attribute for Clip: " + a.name());
+				ONNX2C_ERROR("Unknown attribute for Clip: " + a.name());
 		}
 	}
 

@@ -58,14 +58,14 @@ class Dropout : public Node {
 		const Tensor* data = get_input_tensor(0);
 		name_input(0, "input");
 		if (typeConstraint_highPrecisionNumeric(data) == false)
-			ERROR("Incorrect input for node");
+			ONNX2C_ERROR("Incorrect input for node");
 
 		if (get_number_of_inputs() > 1) {
 			name_input(1, "ratio");
 		}
 
 		if (get_number_of_inputs() > 2) {
-			ERROR("Unimplemented - training_mode input to Dropout");
+			ONNX2C_ERROR("Unimplemented - training_mode input to Dropout");
 			name_input(2, "training_mode");
 		}
 

@@ -10,7 +10,7 @@ class Reduce : public Node {
 	public:
 	// Each instance of this class should override this lambda with the operation of the node type.
 	std::function<const std::string(const std::string&, const std::string&)> elemet_operation =
-	    [](const std::string& a, const std::string& b) { ERROR("onnx2c internal error"); return ""; };
+	    [](const std::string& a, const std::string& b) { ONNX2C_ERROR("onnx2c internal error"); return ""; };
 
 	Reduce(std::string op)
 	{

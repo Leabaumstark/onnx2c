@@ -23,11 +23,11 @@ class Split : public Node {
 			if (a.name() == "axis")
 				axis = parse_attribute_int(a);
 			else if (a.name() == "num_outputs")
-				ERROR("Attribute " << a.name() << " not supported yet");
+				ONNX2C_ERROR("Attribute " << a.name() << " not supported yet");
 			else if (a.name() == "split")
-				ERROR("Attribute " << a.name() << " deprecated and not supported");
+				ONNX2C_ERROR("Attribute " << a.name() << " deprecated and not supported");
 			else
-				ERROR("Bad attribute " << a.name() << " to split");
+				ONNX2C_ERROR("Bad attribute " << a.name() << " to split");
 		}
 	}
 
@@ -138,13 +138,13 @@ class Split : public Node {
 		auto num_inputs = get_number_of_inputs();
 
 		if (num_inputs < 2)
-			ERROR("Split nodes without 'split' input not implemented yet");
+			ONNX2C_ERROR("Split nodes without 'split' input not implemented yet");
 
 		const Tensor* input = get_input_tensor(0);
 		const Tensor* split = get_input_tensor(1);
 
 		if (!split->isConst)
-			ERROR("Only constant split input in Split nodes supported");
+			ONNX2C_ERROR("Only constant split input in Split nodes supported");
 
 		name_input(0, "input");
 		name_input(1, "split");
@@ -155,7 +155,7 @@ class Split : public Node {
 		for (int i = 0; i < split->data_num_elem(); i++) {
 			auto e = split->get_data_element(i);
 			if (e < 0) {
-				ERROR("'split' values must be greater than zero");
+				ONNX2C_ERROR("'split' values must be greater than zero");
 			}
 			split_sum += split->get_data_element(i);
 		}
@@ -165,7 +165,7 @@ class Split : public Node {
 		}
 
 		if (input->data_dim[axis] != split_sum) {
-			ERROR("Sum of 'split' values must be equal to the dim value at 'axis' parameter ("
+			ONNX2C_ERROR("Sum of 'split' values must be equal to the dim value at 'axis' parameter ("
 			      << input->data_dim[axis] << ")");
 		}
 

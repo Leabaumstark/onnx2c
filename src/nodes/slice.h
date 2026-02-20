@@ -37,7 +37,7 @@ class Slice : public Node {
 			else if (a.name() == "ends")
 				en = parse_attribute_ints(a);
 			else
-				ERROR("Unknonw attribute to slice");
+				ONNX2C_ERROR("Unknonw attribute to slice");
 		}
 	}
 
@@ -60,9 +60,9 @@ class Slice : public Node {
 		}
 
 		if (starts && starts->isConst == false)
-			ERROR("Non-const inputs to Slice not handled");
+			ONNX2C_ERROR("Non-const inputs to Slice not handled");
 		if (ends && ends->isConst == false)
-			ERROR("Non-const inputs to Slice not handled");
+			ONNX2C_ERROR("Non-const inputs to Slice not handled");
 
 		if (get_number_of_inputs() > 3) {
 			axes = get_input_tensor(3);
@@ -110,11 +110,11 @@ class Slice : public Node {
 			expected_size = ax.size();
 
 		if (starts && starts->data_num_elem() != expected_size)
-			ERROR("Input 'starts' does not have correct amount of elements");
+			ONNX2C_ERROR("Input 'starts' does not have correct amount of elements");
 		if (ends && ends->data_num_elem() != expected_size)
-			ERROR("Input 'ends' does not have correct amount of elements");
+			ONNX2C_ERROR("Input 'ends' does not have correct amount of elements");
 		if (steps && steps->data_num_elem() != expected_size)
-			ERROR("Input 'steps' does not have correct amount of elements");
+			ONNX2C_ERROR("Input 'steps' does not have correct amount of elements");
 
 		// Default values are in place. Override with given values
 		if (axes) {
@@ -187,7 +187,7 @@ class Slice : public Node {
 			t->data_dim.push_back(num);
 			if (num <= 0)
 				// https://github.com/onnx/onnx/issues/3724
-				ERROR("Unimplemented: tensor sliced to have dimension of size 0");
+				ONNX2C_ERROR("Unimplemented: tensor sliced to have dimension of size 0");
 		}
 
 		ax = ax_;

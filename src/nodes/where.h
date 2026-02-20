@@ -17,7 +17,7 @@ class Where : public Node {
 	{
 		for (const auto& a : node.attribute()) {
 			LOG(TRACE) << "Parsing attribute " << a.name() << std::endl;
-			ERROR("Unknown attribute for Where: " + a.name());
+			ONNX2C_ERROR("Unknown attribute for Where: " + a.name());
 		}
 	}
 
@@ -25,7 +25,7 @@ class Where : public Node {
 	{
 		int num_inputs = get_number_of_inputs();
 		if (num_inputs != 3) {
-			ERROR("Number of inputs must be 3");
+			ONNX2C_ERROR("Number of inputs must be 3");
 		}
 
 		const Tensor* condition = get_input_tensor(0);
@@ -33,11 +33,11 @@ class Where : public Node {
 		const Tensor* y = get_input_tensor(2);
 
 		if (condition->data_type != onnx::TensorProto_DataType_BOOL) {
-			ERROR("The 'condition' tensor must be of type 'bool'");
+			ONNX2C_ERROR("The 'condition' tensor must be of type 'bool'");
 		}
 
 		if (x->data_type != y->data_type) {
-			ERROR("'X' and 'Y' tensors must have the same type");
+			ONNX2C_ERROR("'X' and 'Y' tensors must have the same type");
 		}
 
 		name_input(0, "condition");

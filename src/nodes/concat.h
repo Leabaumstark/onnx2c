@@ -24,7 +24,7 @@ class Concat : public Node {
 				axis = parse_attribute_int(a);
 			}
 			else {
-				ERROR("Unknown attribute " << a.name());
+				ONNX2C_ERROR("Unknown attribute " << a.name());
 			}
 		}
 	}
@@ -79,11 +79,11 @@ class Concat : public Node {
 			if (get_input_tensor(0)->rank() != get_input_tensor(i)->rank()) {
 				LOG(DEBUG) << "Input " << get_input_tensor(0)->name << " has " << get_input_tensor(0)->rank() << " dimensions" << std::endl;
 				LOG(DEBUG) << "Input " << get_input_tensor(i)->name << " has " << get_input_tensor(i)->rank() << " dimensions" << std::endl;
-				ERROR("Concat expects all inputs to have equal number of dimensions");
+				ONNX2C_ERROR("Concat expects all inputs to have equal number of dimensions");
 			}
 			for (size_t j = 0; j < dims.size(); j++) {
 				if (dims[j] != get_input_tensor(i)->data_dim[j] && (int)j != axis)
-					ERROR("Concat's input tensors must have the same shape, except for the "
+					ONNX2C_ERROR("Concat's input tensors must have the same shape, except for the "
 					      "dimension size of the axis to concatenate on.");
 			}
 

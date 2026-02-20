@@ -62,7 +62,7 @@ class Constant : public Node {
 		// value_tensor is the one supplied as the node attribute. It gets
 		// copied into the output, as is.
 		if (value_tensor == nullptr)
-			ERROR("Constant tensor not resolved");
+			ONNX2C_ERROR("Constant tensor not resolved");
 		// "This operator produces a constant tensor."
 		value_tensor->isConst = true;
 		value_tensor->initialize = true;

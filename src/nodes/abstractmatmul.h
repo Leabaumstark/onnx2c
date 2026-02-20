@@ -50,14 +50,14 @@ std::vector<int> AbstractMatMul::resolve_shape() const
 			if (a->data_dim[a->rank() - i - 1] != b->data_dim[b->rank() - i - 1] &&
 			    a->data_dim[a->rank() - i - 1] != 1 &&
 			    b->data_dim[b->rank() - i - 1] != 1) {
-				ERROR("Invalid broadcast dimensions for MatMul");
+				ONNX2C_ERROR("Invalid broadcast dimensions for MatMul");
 			}
 		}
 
 		int k_dim_a = a->data_dim[a->rank() - 1];
 		int k_dim_b = b->rank() > 1 ? b->data_dim[b->rank() - 2] : b->data_dim[0];
 		if (k_dim_a != k_dim_b) {
-			ERROR("Reduction dimension mismatch in MatMul");
+			ONNX2C_ERROR("Reduction dimension mismatch in MatMul");
 		}
 
 		if (a->data_dim.size() > b->data_dim.size()) {

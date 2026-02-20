@@ -24,7 +24,7 @@ class Unsqueeze : public Node {
 			if (a.name() == "axes")
 				axes_attr = parse_attribute_ints(a);
 			else
-				ERROR("Bad attribute " << a.name() << " to unsqueeze");
+				ONNX2C_ERROR("Bad attribute " << a.name() << " to unsqueeze");
 		}
 		return;
 	}
@@ -61,11 +61,11 @@ class Unsqueeze : public Node {
 		// TODO: since axes is now an input tensor - can the contents be dynamic??
 		if (axes_attr.size() == 0) {
 			if (get_number_of_inputs() != 2)
-				ERROR("axes not provided. Malformatted ONNX?");
+				ONNX2C_ERROR("axes not provided. Malformatted ONNX?");
 			const Tensor* axes_tensor = get_input_tensor(1);
 			name_input(1, "axes_tensor");
 			if (axes_tensor->isConst == false)
-				ERROR("provided axes are dynamic, not implmeneted");
+				ONNX2C_ERROR("provided axes are dynamic, not implmeneted");
 			for (unsigned i = 0; (int)i < axes_tensor->data_num_elem(); i++) {
 				int64_t* rd = (int64_t*)axes_tensor->data_buffer; // axes data must be int64
 				axes_attr.push_back(rd[i]);

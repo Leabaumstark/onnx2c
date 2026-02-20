@@ -15,13 +15,13 @@ void Tensor::parse_onnx_tensor(const onnx::TensorProto& tensor)
 
 	// assert tensor is resolvable
 	if (onnx::TensorProto_DataLocation() != onnx::TensorProto_DataLocation_DEFAULT)
-		ERROR("unhandled: non-default data location in tensor " << tensor.name());
+		ONNX2C_ERROR("unhandled: non-default data location in tensor " << tensor.name());
 	if (tensor.has_segment())
-		ERROR("unhandled: segmented data in tensor" << tensor.name());
+		ONNX2C_ERROR("unhandled: segmented data in tensor" << tensor.name());
 
 	int32_t datatype = tensor.data_type();
 	if (onnx::TensorProto_DataType_IsValid(datatype) == false)
-		ERROR("Non-valid data type " << datatype << " in tensor " << tensor.name());
+		ONNX2C_ERROR("Non-valid data type " << datatype << " in tensor " << tensor.name());
 	data_type = static_cast<onnx::TensorProto_DataType>(datatype);
 
 	// Number of data in the ONNX protobuffer. Except if data is stored "externally" this will be 0 :|
@@ -68,7 +68,7 @@ void Tensor::parse_onnx_tensor(const onnx::TensorProto& tensor)
 			data_num_elements = tensor.uint64_data_size();
 			break;
 		default:
-			ERROR("unhandled tensor data type in tensor " << tensor.name());
+			ONNX2C_ERROR("unhandled tensor data type in tensor " << tensor.name());
 			break;
 	};
 
@@ -79,19 +79,19 @@ void Tensor::parse_onnx_tensor(const onnx::TensorProto& tensor)
 	}
 	if (data_num_elements != calc_num_data) {
 		if (data_num_elements != 0)
-			ERROR("Error: data size does not match dimensions, and data_num_elem is not zero");
+			ONNX2C_ERROR("Error: data size does not match dimensions, and data_num_elem is not zero");
 		else if (tensor.has_raw_data() == false)
-			ERROR("Error: data size does not match dimensions, and no raw data");
+			ONNX2C_ERROR("Error: data size does not match dimensions, and no raw data");
 	}
 
 	data_buffer = malloc(data_num_elem() * data_elem_size());
 	if (data_buffer == NULL)
-		ERROR("memory allocation failed for tensor " << tensor.name());
+		ONNX2C_ERROR("memory allocation failed for tensor " << tensor.name());
 
 	if (tensor.has_raw_data()) {
 		std::string raw_data = tensor.raw_data(); // Yes, std::string!
 		if (raw_data.size() != (uint64_t)(calc_num_data * data_elem_size()))
-			ERROR("Error: tensor raw data size does not match dimensions");
+			ONNX2C_ERROR("Error: tensor raw data size does not match dimensions");
 
 		memcpy(data_buffer, raw_data.c_str(), raw_data.size());
 	}
@@ -142,7 +142,7 @@ void Tensor::parse_onnx_tensor(const onnx::TensorProto& tensor)
 					((uint16_t*)data_buffer)[i] = tensor.int32_data(i);
 				break;
 			default:
-				ERROR("unhandled tensor data type in tensor " << tensor.name());
+				ONNX2C_ERROR("unhandled tensor data type in tensor " << tensor.name());
 				break;
 		};
 	}
@@ -197,7 +197,7 @@ int Tensor::data_elem_size(void) const
 			return sizeof(bool);
 			break;
 		default:
-			ERROR("unhandled tensor data type in tensor " << name);
+			ONNX2C_ERROR("unhandled tensor data type in tensor " << name);
 			break;
 	};
 }
@@ -248,7 +248,7 @@ std::string Tensor::data_type_str(void) const
 			return "UNDEFINED";
 			break;
 		default:
-			ERROR("unhandled tensor data type in tensor " << name);
+			ONNX2C_ERROR("unhandled tensor data type in tensor " << name);
 			break;
 	};
 }
@@ -277,7 +277,7 @@ std::pair<std::string, std::string> Tensor::get_type_bounds() const
 		case onnx::TensorProto_DataType_DOUBLE:
 			return std::make_pair("-DBL_MAX", "DBL_MAX");
 		default:
-			ERROR("unhandled tensor data type in tensor " << name);
+			ONNX2C_ERROR("unhandled tensor data type in tensor " << name);
 			return std::make_pair("", "");
 	};
 }
@@ -426,7 +426,7 @@ void Tensor::print_element(std::ostream& dst, uint64_t element) const
 		}
 
 		default:
-			ERROR("unimplemented printing of initialized datatype " << data_type_str());
+			ONNX2C_ERROR("unimplemented printing of initialized datatype " << data_type_str());
 	}
 }
 
@@ -575,7 +575,7 @@ int64_t Tensor::get_data_element(uint64_t i) const
 		case onnx::TensorProto_DataType_INT64:
 			return ((int64_t*)data_buffer)[i];
 		default:
-			ERROR("Unhandled data type");
+			ONNX2C_ERROR("Unhandled data type");
 	}
 
 	return INT64_MIN;
@@ -586,7 +586,7 @@ float Tensor::get_data_element_float(uint64_t i) const
 		case onnx::TensorProto_DataType_FLOAT:
 			return ((float*)data_buffer)[i];
 		default:
-			ERROR("Unhandled data type");
+			ONNX2C_ERROR("Unhandled data type");
 	}
 
 	return 0;

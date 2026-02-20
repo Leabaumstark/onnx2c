@@ -52,22 +52,22 @@ void store_define_option(const std::string& opt)
 {
 	auto delim_pos = opt.find(':', 0);
 	if (delim_pos == std::string::npos)
-		ERROR("bad command line argument for the '-d' option");
+		ONNX2C_ERROR("bad command line argument for the '-d' option");
 
 	std::string name = opt.substr(0, delim_pos);
 	if (name.size() < 1)
-		ERROR("bad command line argument for the '-d' option");
+		ONNX2C_ERROR("bad command line argument for the '-d' option");
 
 	std::string val = opt.substr(delim_pos + 1, std::string::npos);
 	if (val.size() < 1)
-		ERROR("bad command line argument for the '-d' option");
+		ONNX2C_ERROR("bad command line argument for the '-d' option");
 
 	uint32_t val_num;
 	try {
 		val_num = std::stoul(val);
 	}
 	catch (std::exception& e) {
-		ERROR("bad command line argument for the '-d' option");
+		ONNX2C_ERROR("bad command line argument for the '-d' option");
 	}
 
 	options.dim_defines[name] = val_num;

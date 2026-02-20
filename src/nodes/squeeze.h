@@ -21,7 +21,7 @@ class Squeeze : public Node {
 			if (a.name() == "axes")
 				axes = parse_attribute_ints(a);
 			else
-				ERROR("Bad attribute " << a.name() << " to squeeze");
+				ONNX2C_ERROR("Bad attribute " << a.name() << " to squeeze");
 		}
 	}
 
@@ -48,7 +48,7 @@ class Squeeze : public Node {
 			const Tensor* axes_tensor = get_input_tensor(1);
 			name_input(1, "axes_tensor");
 			if (axes_tensor->isConst == false)
-				ERROR("provided axes are dynamic, not implmeneted");
+				ONNX2C_ERROR("provided axes are dynamic, not implmeneted");
 			for (unsigned i = 0; (int)i < axes_tensor->data_num_elem(); i++) {
 				int64_t* rd = (int64_t*)axes_tensor->data_buffer; // axes data must be int64
 				axes.push_back(rd[i]);
@@ -62,7 +62,7 @@ class Squeeze : public Node {
 					axes.push_back(i);
 
 		if (axes.size() == 0)
-			ERROR("No axes to squeeze away?");
+			ONNX2C_ERROR("No axes to squeeze away?");
 
 		// negative axes means counted from "end"
 		for (auto& a : axes)
@@ -79,7 +79,7 @@ class Squeeze : public Node {
 
 			if (to_be_squeezed) {
 				if (data->data_dim[i] != 1)
-					ERROR("Attempting to squeeze an unsqeezable dimension");
+					ONNX2C_ERROR("Attempting to squeeze an unsqeezable dimension");
 			}
 			else
 				rv->data_dim.push_back(data->data_dim[i]);

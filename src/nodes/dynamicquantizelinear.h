@@ -17,7 +17,7 @@ class DynamicQuantizeLinear : public Node {
 	virtual void parseAttributes(onnx::NodeProto& node) override
 	{
 		for (const auto& a : node.attribute()) {
-			ERROR("DynamicQuantizeLinear should not have attributes, found" << a.name());
+			ONNX2C_ERROR("DynamicQuantizeLinear should not have attributes, found" << a.name());
 		}
 	}
 

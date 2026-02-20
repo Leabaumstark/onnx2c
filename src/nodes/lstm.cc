@@ -36,7 +36,7 @@ void LSTM::parseAttributes(onnx::NodeProto& node)
 			if (direction == "")
 				direction = "forward";
 			else if (direction != "forward" && direction != "reverse" && direction != "bidirectional")
-				ERROR("Bad value (" << direction << ") for direction attribute");
+				ONNX2C_ERROR("Bad value (" << direction << ") for direction attribute");
 			// The specification is not quite clear - need test case
 			if (direction == "reverse")
 				LOG(WARNING) << "Reverse LSTM might be buggy" << std::flush;
@@ -48,7 +48,7 @@ void LSTM::parseAttributes(onnx::NodeProto& node)
 		else if (a.name() == "layout")
 			layout = parse_attribute_int(a);
 		else
-			ERROR("Bad attribute " << a.name() << " for LSTM");
+			ONNX2C_ERROR("Bad attribute " << a.name() << " for LSTM");
 	}
 }
 
@@ -62,7 +62,7 @@ float LSTM::get_activation_alpha(const std::string& a)
 	if (a == "Relu")
 		return 0;
 
-	ERROR("Unhandled: alpha for activation: " << a);
+	ONNX2C_ERROR("Unhandled: alpha for activation: " << a);
 }
 float LSTM::get_activation_beta(const std::string& a)
 {
@@ -74,7 +74,7 @@ float LSTM::get_activation_beta(const std::string& a)
 	if (a == "Relu")
 		return 0;
 
-	ERROR("Unhandled: beta for activation: " << a);
+	ONNX2C_ERROR("Unhandled: beta for activation: " << a);
 }
 
 void LSTM::print_activation(std::ostream& dst, const std::string& activation, const std::string& var) const
@@ -92,7 +92,7 @@ void LSTM::print_activation(std::ostream& dst, const std::string& activation, co
 	else if (activation == "Relu")
 		dst << "MAX(" << variable << ", 0);" << std::endl;
 	else
-		ERROR("Unimplmemented activation function");
+		ONNX2C_ERROR("Unimplmemented activation function");
 }
 
 /* Print the C code for the core LSTM kernel, inside of the "sequences" loop.
@@ -343,7 +343,7 @@ void LSTM::calculate_data_dimensions()
 void LSTM::resolve(void)
 {
 	if (get_number_of_inputs() < 3 || get_number_of_inputs() > 8)
-		ERROR("wrong number of inputs to LSTM");
+		ONNX2C_ERROR("wrong number of inputs to LSTM");
 
 	// Set attribute default values for those attributes that are not set in the model
 	if (activations.size() == 0) {
@@ -357,7 +357,7 @@ void LSTM::resolve(void)
 		}
 	}
 	if (activations.size() != 3 && activations.size() != 6)
-		ERROR("Error - bad number of activations attributes");
+		ONNX2C_ERROR("Error - bad number of activations attributes");
 
 	if (activation_alpha.size() == 0) {
 		for (auto& a : activations) {
@@ -365,7 +365,7 @@ void LSTM::resolve(void)
 		}
 	}
 	if (activation_alpha.size() != 3 && activation_alpha.size() != 6)
-		ERROR("Unimplemented/error: not 3(6) activation alphas");
+		ONNX2C_ERROR("Unimplemented/error: not 3(6) activation alphas");
 
 	if (activation_beta.size() == 0) {
 		for (auto& a : activations) {
@@ -373,10 +373,10 @@ void LSTM::resolve(void)
 		}
 	}
 	if (activation_beta.size() != 3 && activation_beta.size() != 6)
-		ERROR("Unimplemented/error: not 3(6) activation betas");
+		ONNX2C_ERROR("Unimplemented/error: not 3(6) activation betas");
 
 	if (hidden_size < 0)
-		ERROR("Must provide hidden_size attribute!");
+		ONNX2C_ERROR("Must provide hidden_size attribute!");
 
 	name_input(0, "X");
 	name_input(1, "W");
@@ -407,13 +407,13 @@ void LSTM::resolve(void)
 		const Tensor* sequence_lens = get_sequence_lens();
 
 		if (static_cast<int>(sequence_lens->rank()) != 1)
-			ERROR("If providing sequence lengths, it must be a 1D tensor");
+			ONNX2C_ERROR("If providing sequence lengths, it must be a 1D tensor");
 		if (static_cast<int>(sequence_lens->data_dim[0]) != batch_size)
-			ERROR("If providing sequence lengths, there must be 'batch_size' of them");
+			ONNX2C_ERROR("If providing sequence lengths, there must be 'batch_size' of them");
 		for (auto sl : sequence_lens->data_dim)
 			if (sl < seq_length)
 				// Not quite sure if I understand the documentation correctly here.
-				ERROR("Error: requested sequence lenght is longer than input data");
+				ONNX2C_ERROR("Error: requested sequence lenght is longer than input data");
 	}
 
 	// Generate output tensors.
@@ -441,7 +441,7 @@ void LSTM::resolve(void)
 	Y_h->isRecursive = true;
 	Y_h->data_buffer = calloc(Y_h->data_num_elem(), Y_h->data_elem_size());
 	if (Y_h->data_buffer == NULL)
-		ERROR("Memory allocation failed");
+		ONNX2C_ERROR("Memory allocation failed");
 	Y_h->initialize = true;
 
 	Tensor* Y_c = new Tensor;
@@ -450,7 +450,7 @@ void LSTM::resolve(void)
 	Y_c->isRecursive = true;
 	Y_c->data_buffer = calloc(Y_c->data_num_elem(), Y_c->data_elem_size());
 	if (Y_c->data_buffer == NULL)
-		ERROR("Memory allocation failed");
+		ONNX2C_ERROR("Memory allocation failed");
 	Y_c->initialize = true;
 
 	register_output(Y, "Y");

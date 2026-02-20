@@ -50,7 +50,7 @@ class LRN : public Node {
 		name_input(0, "X");
 
 		if (size == -1)
-			ERROR("LRN: attribute 'size' was not given");
+			ONNX2C_ERROR("LRN: attribute 'size' was not given");
 
 		/* Create output tensors.
 		 * Set data dimensions and data type for the created tensors. */

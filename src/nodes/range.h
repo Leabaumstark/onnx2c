@@ -44,7 +44,7 @@ class Range : public Node {
 	virtual void resolve(void) override
 	{
 		if (get_number_of_inputs() != 3)
-			ERROR("Range node does not have 3 inputs");
+			ONNX2C_ERROR("Range node does not have 3 inputs");
 		const Tensor* start = get_input_tensor(0);
 		const Tensor* limit = get_input_tensor(1);
 		const Tensor* delta = get_input_tensor(2);
@@ -53,11 +53,11 @@ class Range : public Node {
 		name_input(2, "delta_arg");
 
 		if (start->isConst == false)
-			ERROR("Unimplemented: non-constant input (start) to Range node");
+			ONNX2C_ERROR("Unimplemented: non-constant input (start) to Range node");
 		if (limit->isConst == false)
-			ERROR("Unimplemented: non-constant input (limit) to Range node");
+			ONNX2C_ERROR("Unimplemented: non-constant input (limit) to Range node");
 		if (delta->isConst == false)
-			ERROR("Unimplemented: non-constant input (delta) to Range node");
+			ONNX2C_ERROR("Unimplemented: non-constant input (delta) to Range node");
 
 		// figure out the contents of start, limit, delta, and the size of output
 		if (start->data_type == onnx::TensorProto_DataType_FLOAT)
@@ -67,7 +67,7 @@ class Range : public Node {
 		else if (start->data_type == onnx::TensorProto_DataType_INT32)
 			resolve_limits<int32_t>();
 		else
-			ERROR("Unimplemented data type for Range");
+			ONNX2C_ERROR("Unimplemented data type for Range");
 
 		/* Create output tensors.
 		 * Set data dimensions and data type for the created tensors. */

@@ -21,7 +21,7 @@ class Gather : public Node {
 			if (a.name() == "axis")
 				axis = parse_attribute_int(a);
 			else
-				ERROR("Unknown attribute for Gather: " + a.name());
+				ONNX2C_ERROR("Unknown attribute for Gather: " + a.name());
 		}
 	}
 

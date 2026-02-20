@@ -18,14 +18,14 @@ class Transpose : public Node {
 		for (const auto& a : node.attribute()) {
 			if (a.name() == "perm") {
 				if (a.type() != onnx::AttributeProto_AttributeType_INTS)
-					ERROR("Bad attribute " << a.name());
+					ONNX2C_ERROR("Bad attribute " << a.name());
 
 				for (auto i : a.ints()) {
 					perm.push_back(i);
 				}
 			}
 			else
-				ERROR("Unknown attribute " << a.name());
+				ONNX2C_ERROR("Unknown attribute " << a.name());
 		}
 	}
 
@@ -68,7 +68,7 @@ class Transpose : public Node {
 	virtual void resolve(void) override
 	{
 		if (get_number_of_inputs() != 1)
-			ERROR("wrong number of inputs to Transpose");
+			ONNX2C_ERROR("wrong number of inputs to Transpose");
 
 		const Tensor* data = get_input_tensor(0);
 		name_input(0, "input");

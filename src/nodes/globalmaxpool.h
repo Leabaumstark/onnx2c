@@ -56,7 +56,7 @@ class GlobalMaxPool : public Node {
 		const Tensor* X = get_input_tensor(0);
 		name_input(0, "input");
 		if (typeConstraint_plainFloatingPoints(X) == false)
-			ERROR("Incorrect input for node");
+			ONNX2C_ERROR("Incorrect input for node");
 
 		/* Create output tensors */
 		Tensor* rv = new Tensor;

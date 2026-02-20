@@ -40,7 +40,7 @@ void Reduce::parseAttributes(onnx::NodeProto& node)
 			keepdims = keepdims != 0 ? 1 : 0; // default is 1
 		}
 		else
-			ERROR("Ignoring attribute " + a.name() + " for node Reduce/" + onnx_name);
+			ONNX2C_ERROR("Ignoring attribute " + a.name() + " for node Reduce/" + onnx_name);
 	}
 }
 
@@ -106,7 +106,7 @@ std::vector<size_t> Reduce::normalized_axes(const Tensor* t) const
 			axis += t->rank();
 		}
 		if (axis < 0 || static_cast<size_t>(axis) >= t->data_dim.size()) {
-			ERROR("Invalid axis " + std::to_string(axis) + " for input tensor with " + std::to_string(t->data_dim.size()) + " dimensions.");
+			ONNX2C_ERROR("Invalid axis " + std::to_string(axis) + " for input tensor with " + std::to_string(t->data_dim.size()) + " dimensions.");
 		}
 		normalized_axes.push_back(static_cast<size_t>(axis));
 	}
@@ -123,7 +123,7 @@ void Reduce::resolve(void)
 		name_input(1, "axes");
 
 		if (!axes_tensor->isConst)
-			ERROR("Reducing on run-time defined axes not supported");
+			ONNX2C_ERROR("Reducing on run-time defined axes not supported");
 
 		assert(axes_tensor->data_type == onnx::TensorProto_DataType_INT64);
 
@@ -185,7 +185,7 @@ void Reduce::resolve(void)
 		initial_value = type_max_value;
 	}
 	else {
-		ERROR("Unimplemented: node operation " << op_name);
+		ONNX2C_ERROR("Unimplemented: node operation " << op_name);
 	}
 
 	// If axes is empty, we are reducing across all dimensions
@@ -209,7 +209,7 @@ void Reduce::resolve(void)
 
 		// If keepdims is 0, remove the dimensions set to 1 from the shape
 		if (!keepdims) {
-			// ERROR("Reduce with keepdims=0 not implemented yet");
+			// ONNX2C_ERROR("Reduce with keepdims=0 not implemented yet");
 			std::vector<int> new_shape;
 			for (int dim_size : t->data_dim) {
 				if (dim_size != 1) {

@@ -29,7 +29,7 @@ void MatMul::resolve(void)
 	Tensor* b = get_input_tensor(1);
 
 	if (a->data_type != b->data_type) {
-		ERROR("Data types of A and B must match in MatMul");
+		ONNX2C_ERROR("Data types of A and B must match in MatMul");
 	}
 
 	name_input(0, "A");

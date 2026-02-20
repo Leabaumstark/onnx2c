@@ -183,7 +183,7 @@ void ConvTranspose::resolve(void)
 
 	// ONNX backend test didn't have a test with groups :|
 	if (group != 1)
-		ERROR("Unimplemented: groups in ConvTranspose");
+		ONNX2C_ERROR("Unimplemented: groups in ConvTranspose");
 
 	// Set defaults and calculate attributes
 	resolve_strides();

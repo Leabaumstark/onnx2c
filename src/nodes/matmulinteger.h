@@ -36,7 +36,7 @@ class MatMulInteger : public AbstractMatMul {
 			name_input(2, "a_zero_point");
 			if (get_input_tensor(2)->data_dim.size() != 1 ||
 			    get_input_tensor(2)->data_dim[0] != 1) {
-				ERROR("a_zero_point must be 1 dimensional with 1 element");
+				ONNX2C_ERROR("a_zero_point must be 1 dimensional with 1 element");
 			}
 		}
 
@@ -44,7 +44,7 @@ class MatMulInteger : public AbstractMatMul {
 			name_input(3, "b_zero_point");
 			if (get_input_tensor(3)->data_dim.size() != 1 ||
 			    get_input_tensor(3)->data_dim[0] != 1) {
-				ERROR("b_zero_point must be 1 dimensional with 1 element");
+				ONNX2C_ERROR("b_zero_point must be 1 dimensional with 1 element");
 			}
 		}
 

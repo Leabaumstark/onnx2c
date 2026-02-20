@@ -33,7 +33,7 @@ void Cast::resolve(void)
 			output_type = "double";
 			break;
 		default:
-			ERROR("Unimplemented casting to requested type");
+			ONNX2C_ERROR("Unimplemented casting to requested type");
 	}
 
 	Tensor* t = new Tensor;

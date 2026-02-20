@@ -148,12 +148,12 @@ class Elementwise : public Node {
 				return x+">"+a+" ? "+x+" : 0;"; };
 		}
 		else
-			ERROR("Elementwise operand not implemented: " + op);
+			ONNX2C_ERROR("Elementwise operand not implemented: " + op);
 	}
 
 	// Each instance of this class should override this lambda with the operation of the node type.
 	std::function<const std::string(const std::string& Xidx)> operation =
-	    [](const std::string& x) { ERROR("onnx2c internal error"); return ""; };
+	    [](const std::string& x) { ONNX2C_ERROR("onnx2c internal error"); return ""; };
 
 	// NB: not all ONNX operators implemented with Elementwise have attributes.
 	// This gets the attributes over an union of all implemented operators
@@ -173,7 +173,7 @@ class Elementwise : public Node {
 				lambd = parse_attribute_float(a);
 
 			else
-				ERROR("unknown attribute");
+				ONNX2C_ERROR("unknown attribute");
 		}
 	}
 

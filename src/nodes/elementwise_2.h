@@ -10,7 +10,7 @@ class Elementwise_2 : public Node {
 	public:
 	// Each instance of this class should override this lambda with the operation of the node type.
 	std::function<const std::string(const std::string&, const std::string&)> operation =
-	    [](const std::string& a, const std::string& b) { ERROR("onnx2c internal error"); return ""; };
+	    [](const std::string& a, const std::string& b) { ONNX2C_ERROR("onnx2c internal error"); return ""; };
 
 	bool output_is_bool;
 
@@ -65,7 +65,7 @@ class Elementwise_2 : public Node {
 				if (fmod)
 					return math_func("fmod") + "(" + a + "," + b + ");";
 				else
-					ERROR("Non fmod Mod operator definition is not clear in ONNX specification");
+					ONNX2C_ERROR("Non fmod Mod operator definition is not clear in ONNX specification");
 			};
 		else if (op == "Mul")
 			operation = [](const std::string& a, const std::string& b) { return a + "*" + b + ";"; };
@@ -85,7 +85,7 @@ class Elementwise_2 : public Node {
 		else if (op == "Sub")
 			operation = [](const std::string& a, const std::string& b) { return a + "-" + b + ";"; };
 		else
-			ERROR("Elementwise_2 operand " + op + " not implemented");
+			ONNX2C_ERROR("Elementwise_2 operand " + op + " not implemented");
 	}
 
 	virtual void parseAttributes(onnx::NodeProto& node) override
@@ -97,7 +97,7 @@ class Elementwise_2 : public Node {
 			else if (a.name() == "fmod")
 				fmod = parse_attribute_int(a);
 			else
-				ERROR("unknown attribute");
+				ONNX2C_ERROR("unknown attribute");
 		}
 	}
 

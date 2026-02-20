@@ -35,17 +35,17 @@ class BatchNormalization : public Node {
 	void parseAttribute_epsilon(const onnx::AttributeProto& a)
 	{
 		if (a.type() != onnx::AttributeProto_AttributeType_FLOAT)
-			ERROR("Bad attribute " << a.name());
+			ONNX2C_ERROR("Bad attribute " << a.name());
 		if (a.has_f() == false)
-			ERROR("Bad attribute " << a.name());
+			ONNX2C_ERROR("Bad attribute " << a.name());
 		epsilon = a.f();
 	}
 	void parseAttribute_momentum(const onnx::AttributeProto& a)
 	{
 		if (a.type() != onnx::AttributeProto_AttributeType_FLOAT)
-			ERROR("Bad attribute " << a.name());
+			ONNX2C_ERROR("Bad attribute " << a.name());
 		if (a.has_f() == false)
-			ERROR("Bad attribute " << a.name());
+			ONNX2C_ERROR("Bad attribute " << a.name());
 		momentum = a.f();
 	}
 
@@ -61,10 +61,10 @@ class BatchNormalization : public Node {
 				// NB: spatial was removed in onnx opset v. 9.
 				int spatial = parse_attribute_int(a);
 				if (spatial != 1)
-					ERROR("non-default value for 'spatial' attribute not implemented");
+					ONNX2C_ERROR("non-default value for 'spatial' attribute not implemented");
 			}
 			else
-				ERROR("Unknown attribute " << a.name());
+				ONNX2C_ERROR("Unknown attribute " << a.name());
 		}
 	}
 
@@ -127,7 +127,7 @@ class BatchNormalization : public Node {
 	bool isSplatted(const Tensor* t, float value) const
 	{
 		if (t->data_type != onnx::TensorProto_DataType_FLOAT)
-			ERROR("Unimplemented");
+			ONNX2C_ERROR("Unimplemented");
 		if (t->isConst == false)
 			return false;
 
@@ -153,7 +153,7 @@ class BatchNormalization : public Node {
 	virtual void resolve(void) override
 	{
 		if (get_number_of_inputs() != 5)
-			ERROR("wrong number of inputs to BatchNormalization");
+			ONNX2C_ERROR("wrong number of inputs to BatchNormalization");
 
 		name_input(0, "X");
 		name_input(1, "scale");

@@ -23,7 +23,7 @@ std::string cify_name(const std::string& in)
 int parse_attribute_int(const onnx::AttributeProto& a)
 {
 	if (a.has_i() == false)
-		ERROR("Not a int attribute");
+		ONNX2C_ERROR("Not a int attribute");
 
 	return a.i();
 }
@@ -31,7 +31,7 @@ int parse_attribute_int(const onnx::AttributeProto& a)
 std::vector<int64_t> parse_attribute_ints(const onnx::AttributeProto& a)
 {
 	if (a.ints_size() == 0)
-		ERROR("Not a ints attribute");
+		ONNX2C_ERROR("Not a ints attribute");
 
 	std::vector<int64_t> rv;
 
@@ -44,14 +44,14 @@ std::vector<int64_t> parse_attribute_ints(const onnx::AttributeProto& a)
 float parse_attribute_float(const onnx::AttributeProto& a)
 {
 	if (a.has_f() == false)
-		ERROR("Not a float attribute");
+		ONNX2C_ERROR("Not a float attribute");
 
 	return a.f();
 }
 std::vector<float> parse_attribute_floats(const onnx::AttributeProto& a)
 {
 	if (a.floats_size() == 0)
-		ERROR("Not a floats attribute");
+		ONNX2C_ERROR("Not a floats attribute");
 
 	std::vector<float> rv;
 
@@ -64,7 +64,7 @@ std::vector<float> parse_attribute_floats(const onnx::AttributeProto& a)
 std::string parse_attribute_string(const onnx::AttributeProto& a)
 {
 	if (a.has_s() == false)
-		ERROR("Not a string attribute");
+		ONNX2C_ERROR("Not a string attribute");
 
 	return a.s();
 }
@@ -72,7 +72,7 @@ std::string parse_attribute_string(const onnx::AttributeProto& a)
 std::vector<std::string> parse_attribute_strings(const onnx::AttributeProto& a)
 {
 	if (a.strings_size() == 0)
-		ERROR("Not a floats attribute");
+		ONNX2C_ERROR("Not a floats attribute");
 
 	std::vector<std::string> rv;
 
@@ -85,9 +85,9 @@ std::vector<std::string> parse_attribute_strings(const onnx::AttributeProto& a)
 toC::Tensor* parse_attribute_tensor(const onnx::AttributeProto& a)
 {
 	if (a.type() != onnx::AttributeProto_AttributeType_TENSOR)
-		ERROR("Attribute type is not tensor");
+		ONNX2C_ERROR("Attribute type is not tensor");
 	if (a.has_t() == false)
-		ERROR("No tensor in attribute");
+		ONNX2C_ERROR("No tensor in attribute");
 
 	toC::Tensor* t = new toC::Tensor;
 	t->parse_onnx_tensor(a.t());

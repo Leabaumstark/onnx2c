@@ -46,7 +46,7 @@ class QLinearMatMul : public AbstractMatMul {
 		name_input(input_no, name);
 		if (!(get_input_tensor(input_no)->data_dim.size() == 0 ||
 		      (get_input_tensor(input_no)->data_dim.size() == 1 && get_input_tensor(input_no)->data_dim[0] == 1))) {
-			ERROR(name << " must be scalar");
+			ONNX2C_ERROR(name << " must be scalar");
 		}
 	}
 
